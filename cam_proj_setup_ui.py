@@ -49,44 +49,30 @@ class PrmanProjectionUi(qg.QDialog):
         # self.layout().addWidget(middle_frame)
 
         # Creating the UI elements
-        projector_layout = qg.QHBoxLayout()
-        projector_layout.setAlignment(qc.Qt.AlignHCenter)
-        projector_lable = qg.QLabel('PxrProjector Name:')
         projector_name = qg.QLineEdit()
         projector_name.setPlaceholderText("Enter the name of the "
                                           "PxrProjector....")
-        projector_layout.addWidget(projector_lable)
-        projector_layout.addWidget(projector_name)
 
-        projection_layout = qg.QHBoxLayout()
-        projection_layout.setAlignment(qc.Qt.AlignHCenter)
-        projection_camera_label = qg.QLabel('Projection Camera Name:')
         projection_camera_name = qg.QLineEdit()
         projection_camera_name.setPlaceholderText("Enter the name of the "
                                                   "camera projection....")
         projection_layout.addWidget(projection_camera_label)
         projection_layout.addWidget(projection_camera_name)
 
-        place3d_layout = qg.QHBoxLayout()
-        place3d_layout.setAlignment(qc.Qt.AlignHCenter)
-        place3d_label = qg.QLabel('Place3dTexture Name:')
+        place3d_label = qg.QLabel('Place3DTexture:')
         place3d_name = qg.QLineEdit()
         place3d_name.setPlaceholderText("Enter the name of the "
                                           "place3dTexture....")
-        place3d_layout.addWidget(place3d_label)
-        place3d_layout.addWidget(place3d_name)
+
+        place3d_name_button = qg.QPushButton('Get it from selection')
 
         link_radio_btn = qg.QRadioButton('Link')
         copy_radio_btn = qg.QRadioButton('Copy')
         copy_or_link_layout = qg.QHBoxLayout()
-        copy_or_link_layout.setAlignment(qc.Qt.AlignRight)
         copy_or_link_layout.addWidget(link_radio_btn)
         copy_or_link_layout.addWidget(copy_radio_btn)
 
         # Adding the elements to the top frame layout
-        top_frame_layout.addLayout(projection_layout)
-        top_frame_layout.addLayout(projector_layout)
-        top_frame_layout.addLayout(place3d_layout)
         top_frame_layout.addLayout(copy_or_link_layout)
 
 
