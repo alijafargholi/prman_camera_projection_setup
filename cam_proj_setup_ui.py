@@ -1,6 +1,10 @@
 import PySide.QtCore as qc
 import PySide.QtGui as qg
 
+import functools
+
+import pymel.core as pm
+
 # Global variable to store the UI status, if it's open or closed
 prman_projection_ui = None
 
@@ -143,6 +147,25 @@ class PrmanProjectionUi(qg.QDialog):
 
         # Adding the widgets to the main layout
         self.layout().addWidget(main_tab)
+
+        # Connecting the functions
+        projector_name_button.clicked.connect(
+            functools.partial(self._get_selected_name, projector_name))
+        projection_camera_name_button.clicked.connect(
+            functools.partial(self._get_selected_name, projection_camera_name))
+        place3d_name_button.clicked.connect(functools.partial(
+            self._get_selected_name, place3d_name))
+        cancel_button.clicked.connect(delete_ui)
+
+    def _get_selected_name(self, name):
+        """
+        Will get the name of the selected node and set it as a text to the
+        given field
+
+        :name: reference of the field that the name is going to be set to
+        :return: None
+        """
+        name.setText(str(pm.ls(sl=True)[0].name()))
 
 
 def create_ui():
