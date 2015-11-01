@@ -1,3 +1,12 @@
+"""
+V 1.0
+PrMan Projection Setup Tool
+By Ali Jafargholi - www.alijafargholi.com - ali.jafargholi@gmail.com
+
+The use of this tool is to setup the connection between the projection nodes
+in Maya.
+"""
+
 import PySide.QtCore as qc
 import PySide.QtGui as qg
 
@@ -155,21 +164,15 @@ class PrmanProjectionUi(qg.QDialog):
         help_frame_layout = qg.QVBoxLayout()
         help_frame_layout.setContentsMargins(1, 1, 1, 1)
         help_frame_layout.setSpacing(3)
-        help_frame_layout.setAlignment(qc.Qt.AlignVCenter)
+        help_frame_layout.setAlignment(qc.Qt.AlignTop)
         help_frame.setLayout(help_frame_layout)
 
         # Help elements
-        help_page = qg.QPushButton('Wiki Page')
+        help_page = qg.QPushButton('Visit the Wiki Page')
         help_page.setToolTip('SHow the wiki page')
-        send_error = qg.QPushButton('Send Errors')
-        send_error.setToolTip('Email the erros and issues to author')
-        send_suggestion = qg.QPushButton('Send Suggestion')
-        send_suggestion.setToolTip('Email any suggestion to the author')
 
         # Adding the help elements to the Help layout
         help_frame_layout.addWidget(help_page)
-        help_frame_layout.addWidget(send_error)
-        help_frame_layout.addWidget(send_suggestion)
 
         # Main Layout
         main_tab = qg.QTabWidget()
@@ -201,6 +204,17 @@ class PrmanProjectionUi(qg.QDialog):
             functools.partial(self._create_new_node,
                               node_type="place3dTexture",
                               name_field=self.place3d_name))
+        help_page.clicked.connect(self._go_to_wiki)
+
+    def _go_to_wiki(self):
+        """
+        Opens the browser link and direct it to the help page for this tool
+        :return: Node
+        """
+        link_page = 'http://alijafargholi.com/2015/11/' \
+                    'prman-camera-projection-setup-for-maya'
+        # link_page = "https://www.google.com/"
+        pm.launch(web=link_page)
 
     def _warning(self, message):
         """
