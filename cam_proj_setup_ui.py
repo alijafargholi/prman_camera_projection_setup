@@ -1,14 +1,16 @@
 """
-V 1.0
+V 2.0
 PrMan Projection Setup Tool
 By Ali Jafargholi - www.alijafargholi.com - ali.jafargholi@gmail.com
 
 The use of this tool is to setup the connection between the projection nodes
 in Maya.
+
+Update: Added https://github.com/mottosso/Qt.py to be able to open the tool
+within Maya 2017
 """
 
-import PySide.QtCore as qc
-import PySide.QtGui as qg
+from Qt import QtWidgets, QtCore
 
 import functools
 
@@ -18,7 +20,7 @@ import pymel.core as pm
 prman_projection_ui = None
 
 
-class PrmanProjectionUi(qg.QDialog):
+class PrmanProjectionUi(QtWidgets.QDialog):
     """
 
     """
@@ -27,85 +29,85 @@ class PrmanProjectionUi(qg.QDialog):
 
         self.setWindowTitle("Prman Projection Setup")
         # Keep the window on top
-        self.setWindowFlags(qc.Qt.WindowStaysOnTopHint)
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         # Setting the size policy
         self.setFixedHeight(150)
         self.setMinimumWidth(600)
 
         # Setting the MAIN layout
-        self.setLayout(qg.QVBoxLayout())
+        self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().setContentsMargins(0, 0, 0, 0)
         self.layout().setSpacing(1)
-        self.layout().setAlignment(qc.Qt.AlignTop)
+        self.layout().setAlignment(QtCore.Qt.AlignTop)
 
         # Creating the frames
-        top_frame = qg.QFrame()
-        top_frame.setFrameStyle(qg.QFrame.Panel | qg.QFrame.Raised)
+        top_frame = QtWidgets.QFrame()
+        top_frame.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Raised)
         # Creating Layout for top frame
-        top_frame_layout = qg.QVBoxLayout()
+        top_frame_layout = QtWidgets.QVBoxLayout()
         top_frame_layout.setContentsMargins(1, 1, 1, 1)
         top_frame_layout.setSpacing(1)
-        top_frame_layout.setAlignment(qc.Qt.AlignTop)
+        top_frame_layout.setAlignment(QtCore.Qt.AlignTop)
         top_frame.setLayout(top_frame_layout)
 
         # Creating the UI elements
-        info_layout = qg.QGridLayout()
+        info_layout = QtWidgets.QGridLayout()
 
         # Projector Node
-        projector_label = qg.QLabel('PxrProjector:')
+        projector_label = QtWidgets.QLabel('PxrProjector:')
         projector_label.setStyleSheet('font-size: 15px;'
                                       'color: #E5FFFF;'
                                       'letter-spacing: 3px;')
-        self.projector_name = qg.QLineEdit()
+        self.projector_name = QtWidgets.QLineEdit()
         self.projector_name.setMinimumHeight(20)
         self.projector_name.setPlaceholderText("Enter the name of the "
                                           "PxrProjector....")
-        self.projector_name_button = qg.QPushButton('GET')
+        self.projector_name_button = QtWidgets.QPushButton('GET')
         self.projector_name_button.setMinimumHeight(20)
         self.projector_name_button.setToolTip('Select the '
                                               '<b>PxrProjector</b> node and '
                                               'the hit this button to '
                                               'get the name')
-        self.new_projector_button = qg.QPushButton('Create a New PxrProjector')
+        self.new_projector_button = QtWidgets.QPushButton('Create a New PxrProjector')
         self.new_projector_button.setStyleSheet("background-color: #004444")
         self.new_projector_button.setMinimumHeight(20)
 
         # Camera Projection Node
-        projection_camera_label = qg.QLabel('Camera Projection:')
+        projection_camera_label = QtWidgets.QLabel('Camera Projection:')
         projection_camera_label.setStyleSheet('font-size: 15px;'
                                               'color: #E5FFFF;'
                                               'letter-spacing: 3px;')
-        self.projection_camera_name = qg.QLineEdit()
+        self.projection_camera_name = QtWidgets.QLineEdit()
         self.projection_camera_name.setMinimumHeight(20)
         self.projection_camera_name.setPlaceholderText("Enter name of camera "
                                                        "projection....")
-        self.projection_camera_name_button = qg.QPushButton('GET')
+        self.projection_camera_name_button = QtWidgets.QPushButton('GET')
         self.projection_camera_name_button.setMinimumHeight(20)
         self.projection_camera_name_button.setToolTip('Select the '
                                                       '<b>Projection '
                                                       'Camera</b> node  and '
                                                       'the hit this button '
                                                       'to get the name')
-        self.new_camera_button = qg.QPushButton('Create a New Camera')
+        self.new_camera_button = QtWidgets.QPushButton('Create a New Camera')
         self.new_camera_button.setStyleSheet("background-color: #004444")
         self.new_camera_button.setMinimumHeight(20)
 
         # Place3dTexture Node
-        place3d_label = qg.QLabel('Place3DTexture:')
+        place3d_label = QtWidgets.QLabel('Place3DTexture:')
         place3d_label.setStyleSheet('font-size: 15px;'
                                     'color: #E5FFFF;'
                                     'letter-spacing: 3px;')
-        self.place3d_name = qg.QLineEdit()
+        self.place3d_name = QtWidgets.QLineEdit()
         self.place3d_name.setMinimumHeight(20)
         self.place3d_name.setPlaceholderText("Enter the name of the "
                                              "place3dTexture....")
-        self.place3d_name_button = qg.QPushButton('GET')
+        self.place3d_name_button = QtWidgets.QPushButton('GET')
         self.place3d_name_button.setMinimumHeight(20)
         self.place3d_name_button.setToolTip('Select the '
                                                  '<b>place3dTexture</b> '
                                                  'node  and the hit this '
                                                  'button to get the name')
-        self.new_place3d_button = qg.QPushButton('Create New Place3dTexture')
+        self.new_place3d_button = QtWidgets.QPushButton('Create New Place3dTexture')
         self.new_place3d_button.setStyleSheet("background-color: #004444")
         self.new_place3d_button.setMinimumHeight(20)
 
@@ -126,27 +128,27 @@ class PrmanProjectionUi(qg.QDialog):
         info_layout.addWidget(self.new_place3d_button, 2, 3)
 
         # Attribute Transfer Mode
-        self.link_radio_btn = qg.QRadioButton('Link')
+        self.link_radio_btn = QtWidgets.QRadioButton('Link')
         self.link_radio_btn.setChecked(True)
-        copy_radio_btn = qg.QRadioButton('Copy')
-        transfer_attr_mode = qg.QLabel("Attribute Transfer Mode:")
-        copy_or_link_layout = qg.QHBoxLayout()
-        copy_or_link_layout.setAlignment(qc.Qt.AlignLeft)
+        copy_radio_btn = QtWidgets.QRadioButton('Copy')
+        transfer_attr_mode = QtWidgets.QLabel("Attribute Transfer Mode:")
+        copy_or_link_layout = QtWidgets.QHBoxLayout()
+        copy_or_link_layout.setAlignment(QtCore.Qt.AlignLeft)
         copy_or_link_layout.addWidget(transfer_attr_mode)
         copy_or_link_layout.addWidget(self.link_radio_btn)
         copy_or_link_layout.addWidget(copy_radio_btn)
 
         # Execute Button
-        final_button_layout = qg.QHBoxLayout()
+        final_button_layout = QtWidgets.QHBoxLayout()
         final_button_layout.setContentsMargins(0, 0, 5, 5)
         final_button_layout.setSpacing(5)
-        final_button_layout.setAlignment(qc.Qt.AlignRight)
+        final_button_layout.setAlignment(QtCore.Qt.AlignRight)
 
-        setup_button = qg.QPushButton("Set Up Projection")
+        setup_button = QtWidgets.QPushButton("Set Up Projection")
         setup_button.setFixedHeight(30)
         setup_button.setFixedWidth(150)
         setup_button.setStyleSheet("background-color: #006000")
-        cancel_button = qg.QPushButton("Close")
+        cancel_button = QtWidgets.QPushButton("Close")
         cancel_button.setFixedHeight(30)
         cancel_button.setFixedWidth(40)
         cancel_button.setStyleSheet("background-color: #CC2900")
@@ -160,22 +162,22 @@ class PrmanProjectionUi(qg.QDialog):
         top_frame_layout.addLayout(final_button_layout)
 
         # Help frame layout
-        help_frame = qg.QFrame()
-        help_frame_layout = qg.QVBoxLayout()
+        help_frame = QtWidgets.QFrame()
+        help_frame_layout = QtWidgets.QVBoxLayout()
         help_frame_layout.setContentsMargins(1, 1, 1, 1)
         help_frame_layout.setSpacing(3)
-        help_frame_layout.setAlignment(qc.Qt.AlignTop)
+        help_frame_layout.setAlignment(QtCore.Qt.AlignTop)
         help_frame.setLayout(help_frame_layout)
 
         # Help elements
-        help_page = qg.QPushButton('Visit the Wiki Page')
+        help_page = QtWidgets.QPushButton('Visit the Wiki Page')
         help_page.setToolTip('SHow the wiki page')
 
         # Adding the help elements to the Help layout
         help_frame_layout.addWidget(help_page)
 
         # Main Layout
-        main_tab = qg.QTabWidget()
+        main_tab = QtWidgets.QTabWidget()
         main_tab.addTab(top_frame, "Projection Setup")
         main_tab.addTab(help_frame, "Get Help")
 
@@ -223,9 +225,9 @@ class PrmanProjectionUi(qg.QDialog):
         :return: QWidget
         """
 
-        warning_box = qg.QMessageBox()
+        warning_box = QtWidgets.QMessageBox()
         warning_box.setText(message)
-        warning_box.setWindowFlags(qc.Qt.WindowStaysOnTopHint)
+        warning_box.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         warning_box.exec_()
 
     def _create_new_node(self, node_type="", name_field=""):
