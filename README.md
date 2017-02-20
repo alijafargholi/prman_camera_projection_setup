@@ -25,9 +25,9 @@ Installation
     * Mac OS X
         * ~/Library/Preferences/Autodesk/maya/scripts
     * Linux
-        * /maya/<version>/scripts
+        * /maya/\<version>/scripts
     * Windows
-        * <drive>:\\Documents and Settings\\<username>\\My Documents\\maya\\scripts
+        * \<drive>:\Documents and Settings\\\<username>\\My Documents\\maya\\scripts
 
 4. Then in a new instance of Maya, open the script editor and run the following
  in a *Python* tab:
